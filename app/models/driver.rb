@@ -4,4 +4,13 @@ class Driver < ApplicationRecord
   validates :name, presence: true
   validates :email, presence: true, uniqueness: true
   validates :password, length: { minimum: 6 }
+
+
+  def self.create_new_one(data)
+    create(
+      name: data[:name],
+      email: data[:email],
+      password: data[:password]
+    )
+  end
 end

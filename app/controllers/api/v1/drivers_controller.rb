@@ -15,13 +15,9 @@ class Api::V1::DriversController < Api::BaseApi
 
   # POST /drivers
   def create
-    @driver = Driver.new(
-      name: params[:name],
-      email: params[:email],
-      password: params[:password]
-    )
+    @driver = Driver.create_new_one(params)
 
-    if @driver.save
+    if !@driver.errors
       render json: @driver, status: :created
     else
       render json: @driver.errors, status: :unprocessable_entity
