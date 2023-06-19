@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
-      resources :drivers
+      resources :drivers, only: [:create]
 
     end
   end

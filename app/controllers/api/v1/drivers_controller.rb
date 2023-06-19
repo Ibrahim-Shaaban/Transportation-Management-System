@@ -15,10 +15,14 @@ class Api::V1::DriversController < Api::BaseApi
 
   # POST /drivers
   def create
-    @driver = Driver.new(driver_params)
+    @driver = Driver.new(
+      name: params[:name],
+      email: params[:email],
+      password: params[:password]
+    )
 
     if @driver.save
-      render json: @driver, status: :created, location: @driver
+      render json: @driver, status: :created
     else
       render json: @driver.errors, status: :unprocessable_entity
     end
@@ -46,6 +50,6 @@ class Api::V1::DriversController < Api::BaseApi
 
     # Only allow a list of trusted parameters through.
     def driver_params
-      params.require(:driver).permit(:name, :email, :password_digest)
+      params.require(:driver).permit(:name, :email, :password)
     end
 end
