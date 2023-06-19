@@ -2,8 +2,8 @@ version: "3"
 services:
   db:
     image: postgres
-    # volumes:
-    #   - postgres_data:/var/lib/postgresql/data
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
     environment:
       POSTGRES_USER: user
@@ -19,6 +19,7 @@ services:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
       POSTGRES_DB: my_db
+      RAILS_ENV: development
     ports:
       - "3000:3000"
     depends_on:
@@ -28,5 +29,5 @@ services:
   redis:
     image: redis:6.0
 
-# volumes:
-#   postgres_data: {}
+volumes:
+  postgres_data: {}
