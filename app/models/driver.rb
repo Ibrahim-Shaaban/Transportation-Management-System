@@ -7,7 +7,7 @@ class Driver < ApplicationRecord
 
 
   def self.create_new_one(data)
-    create(
+    new(
       name: data[:name],
       email: data[:email],
       password: data[:password]
