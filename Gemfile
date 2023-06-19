@@ -49,3 +49,6 @@ end
 
 gem 'dotenv-rails', groups: [:development, :test, :production]
 gem 'rack-cors'
+
+gem 'bcrypt', '~> 3.1.7'
+gem 'jwt'
