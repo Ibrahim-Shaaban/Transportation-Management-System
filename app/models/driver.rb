@@ -25,6 +25,8 @@ class Driver < ApplicationRecord
     end
 
     # generate token
-    token = '123456789'
+    expires_at = Time.zone.now + 4.days
+    token =JsonWebToken.encode({id: driver.id}, expires_at)
+    {token: token, expires_at: expires_at}
   end
 end
