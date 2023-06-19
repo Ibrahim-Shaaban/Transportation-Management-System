@@ -8,6 +8,17 @@ class Api::V1::DriversController < Api::BaseApi
     render json: @drivers
   end
 
+  def sign_in
+    begin
+      login_data = Driver.handle_login(params[:email], params[:password])
+    rescue => e
+      render json: e, status: :unauthorized
+    else
+      render json: login_data
+    end
+
+  end
+
   # GET /drivers/1
   def show
     render json: @driver
@@ -15,7 +26,7 @@ class Api::V1::DriversController < Api::BaseApi
 
   # POST /drivers
   def create
-    @driver = Driver.create_new_one(params)
+    @driver = Driver.create_new_one(params[:name], params[:email], params[:password])
 
     if @driver.save
       render json: @driver, status: :created
