@@ -1,6 +1,8 @@
+require 'faker'
+
 FactoryBot.define do
   factory :truck do
-    name { "MyString" }
-    truck_type { "MyString" }
+    name { Faker::Vehicle.make_and_model }
+    truck_type { %w[Pickup SUV Semi].sample }
   end
 end

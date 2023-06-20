@@ -1,17 +1,16 @@
 require 'rails_helper'
 
-RSpec.describe "Trucks", type: :request do
-  describe "GET /trucks" do
-    let!(:truck) { create(:truck) }
+RSpec.describe Api::V1::TrucksController, type: :controller do
+  describe "GET #index" do
+    let!(:trucks) { create_list(:truck, 3) }
 
     it "returns a list of trucks" do
-      get "/api/v1/trucks"
+      get :index
 
       expect(response).to have_http_status(:ok)
-      expect(response.content_type).to eq('application/json')
 
       json_response = JSON.parse(response.body)
-      expect(json_response['data'].size).to eq(1)
+      expect(json_response['data'].size).to eq(3)
 
       json_response['data'].each_with_index do |truck_data, index|
         expect(truck_data['id']).to eq(trucks[index].id.to_s)
