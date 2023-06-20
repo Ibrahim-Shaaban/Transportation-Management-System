@@ -5,6 +5,9 @@ class Driver < ApplicationRecord
   validates :email, presence: true, uniqueness: true
   validates :password, length: { minimum: 6 }
 
+  has_many :assignments
+  has_many :trucks, through: :assignments
+
 
   def self.create_new_one(name, email, password)
     new(
