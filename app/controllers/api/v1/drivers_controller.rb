@@ -24,10 +24,9 @@ class Api::V1::DriversController < Api::BaseApi
   def sign_in
     begin
       login_data = Driver.handle_login(params[:email], params[:password])
+      render json: login_data
     rescue => e
       render json: e, status: :unauthorized
-    else
-      render json: login_data
     end
 
   end
