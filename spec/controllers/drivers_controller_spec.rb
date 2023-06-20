@@ -65,6 +65,14 @@ RSpec.describe Api::V1::DriversController, type: :controller do
     let(:invalid_truck_id) { 999 }
     let(:auth_token) { JsonWebToken.encode(id: driver.id) }
 
+    context 'when no token is sent' do
+      it 'rejects the request' do
+        put :assign_truck, params: { truck_id: truck.id }
+        expect(response).to have_http_status(:unauthorized)
+        expect(response.body).to eq("unauthenticated driver")
+      end
+    end
+
     context 'when a valid truck id is provided' do
       it 'assigns the truck to the driver' do
         request.headers['Authorization'] = "Bearer #{auth_token}"
