@@ -92,4 +92,38 @@ RSpec.describe Api::V1::DriversController, type: :controller do
       end
     end
   end
+
+  describe 'GET #trucks' do
+    let(:driver) { create(:driver) }
+    let(:truck) { create(:truck) }
+    let(:auth_token) { JsonWebToken.encode(id: driver.id) }
+    let!(:assignment) { create(:assignment, driver_id: driver.id, truck_id: truck.id, truck_name: truck.name, truck_type: truck.truck_type) }
+
+    context 'when authenticated with a valid token' do
+      it 'returns the driver\'s assignments as JSON' do
+        request.headers['Authorization'] = "Bearer #{auth_token}"
+        get :trucks
+        expect(response).to have_http_status(:success)
+        json_response = JSON.parse(response.body)
+        expect(json_response['data'].size).to eq(1)
+        returned_assignment = json_response['data'].first
+
+        expect(returned_assignment['id']).to eq(assignment.id.to_s)
+        expect(returned_assignment['type']).to eq('assignment')
+        expect(returned_assignment['attributes']['truck_name']).to eq(assignment.truck_name)
+        expect(returned_assignment['attributes']['truck_type']).to eq(assignment.truck_type)
+        expect(returned_assignment['attributes']['assignment_date']).to eq(assignment.created_at.iso8601(3))
+        expect(returned_assignment['relationships']['truck']['data']['id']).to eq(truck.id.to_s)
+        expect(returned_assignment['relationships']['driver']['data']['id']).to eq(driver.id.to_s)
+
+      end
+    end
+
+    context 'when not authenticated' do
+      it 'returns a 401 Unauthorized error' do
+        get :trucks
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
+  end
 end
