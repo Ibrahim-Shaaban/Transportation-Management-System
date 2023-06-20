@@ -10,9 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_20_141028) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_20_170757) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "assignments", force: :cascade do |t|
+    t.bigint "driver_id", null: false
+    t.bigint "truck_id", null: false
+    t.string "truck_name"
+    t.string "truck_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["driver_id", "truck_id"], name: "index_assignments_on_driver_id_and_truck_id", unique: true
+    t.index ["driver_id"], name: "index_assignments_on_driver_id"
+    t.index ["truck_id"], name: "index_assignments_on_truck_id"
+  end
 
   create_table "drivers", force: :cascade do |t|
     t.string "name"
@@ -31,4 +43,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_20_141028) do
     t.index ["name"], name: "index_trucks_on_name", unique: true
   end
 
+  add_foreign_key "assignments", "drivers"
+  add_foreign_key "assignments", "trucks"
 end

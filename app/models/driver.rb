@@ -32,4 +32,12 @@ class Driver < ApplicationRecord
     token =JsonWebToken.encode({id: driver.id}, expires_at)
     {token: token, expires_at: expires_at}
   end
+
+  def self.handle_assignment(current_driver, truck_id)
+    truck = Truck.find_by(id: truck_id)
+    unless truck.present?
+      raise "There is no truck with this id"
+    end
+    Assignment.create(driver_id: current_driver.id, truck_id: truck_id, truck_name: truck.name, truck_type: truck.truck_type)
+  end
 end

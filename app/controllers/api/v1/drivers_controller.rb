@@ -12,7 +12,13 @@ class Api::V1::DriversController < Api::BaseApi
   end
 
   def assign_truck
-    render json: current_driver
+    begin
+      Driver.handle_assignment(current_driver, params[:truck_id])
+      render json: "assigned successfully"
+    rescue => e
+      render json: e, status: :unprocessable_entity
+    end
+
   end
 
   def sign_in
