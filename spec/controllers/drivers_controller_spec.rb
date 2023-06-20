@@ -58,4 +58,30 @@ RSpec.describe Api::V1::DriversController, type: :controller do
       end
     end
   end
+
+  describe 'PUT#assign_truck' do
+    let(:driver) { create(:driver) }
+    let(:truck) { create(:truck) }
+    let(:invalid_truck_id) { 999 }
+    let(:auth_token) { JsonWebToken.encode(id: driver.id) }
+
+    context 'when a valid truck id is provided' do
+      it 'assigns the truck to the driver' do
+        request.headers['Authorization'] = "Bearer #{auth_token}"
+        put :assign_truck, params: { truck_id: truck.id }
+        expect(response).to have_http_status(:success)
+        expect(response.body).to eq("assigned successfully")
+        expect(driver.reload.trucks).to include(truck)
+      end
+    end
+
+    context 'when an invalid truck id is provided' do
+      it 'returns a 422 error' do
+        request.headers['Authorization'] = "Bearer #{auth_token}"
+        put :assign_truck, params: { truck_id: invalid_truck_id }
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response.body).to include("There is no truck with this id")
+      end
+    end
+  end
 end
