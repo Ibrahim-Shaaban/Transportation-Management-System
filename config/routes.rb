@@ -6,7 +6,8 @@ Rails.application.routes.draw do
       # resources :assignments
 
       post "sign_in", to: "drivers#sign_in"
-      put "assign_truck", to: "drivers#assign_truck"
+      put "drivers/assign_truck", to: "drivers#assign_truck"
+      get 'drivers/trucks', to: "drivers#trucks"
 
     end
   end

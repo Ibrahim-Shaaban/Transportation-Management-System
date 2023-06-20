@@ -1,6 +1,6 @@
 class Api::V1::DriversController < Api::BaseApi
   before_action :set_driver, only: %i[ show update destroy ]
-  before_action only: [:assign_truck ] do
+  before_action only: [:assign_truck, :trucks ] do
     authorized
   end
 
@@ -19,6 +19,10 @@ class Api::V1::DriversController < Api::BaseApi
       render json: e, status: :unprocessable_entity
     end
 
+  end
+
+  def trucks
+    render json: AssignmentSerializer.new(current_driver.assignments).serializable_hash
   end
 
   def sign_in
