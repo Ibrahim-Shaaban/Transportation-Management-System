@@ -4,8 +4,10 @@ class Api::V1::TrucksController < Api::BaseApi
   # GET /trucks
   def index
     @trucks = Truck.all
-
-    render json: TruckSerializer.new(@trucks).serializable_hash
+    result = PaginationService.new(@trucks, page: params[:page]|| 1, per_page: params[:per_page] || 10).call
+    records =  TruckSerializer.new(result[:records]).serializable_hash
+    result[:records] = records
+    render json: result
   end
 
   # GET /trucks/1
