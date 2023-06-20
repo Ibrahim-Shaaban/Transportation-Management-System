@@ -5,7 +5,7 @@ class Api::V1::TrucksController < Api::BaseApi
   def index
     @trucks = Truck.all
 
-    render json: @trucks
+    render json: TruckSerializer.new(@trucks).serializable_hash
   end
 
   # GET /trucks/1
@@ -18,7 +18,7 @@ class Api::V1::TrucksController < Api::BaseApi
     @truck = Truck.new(truck_params)
 
     if @truck.save
-      render json: @truck, status: :created, location: @truck
+      render json: @truck, status: :created
     else
       render json: @truck.errors, status: :unprocessable_entity
     end
