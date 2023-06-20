@@ -22,6 +22,7 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: my_db
       RAILS_ENV: development
+      REDIS_URL: redis://redis:6379/0
     ports:
       - "3000:3000"
     depends_on:
@@ -30,6 +31,8 @@ services:
   
   redis:
     image: redis:6.0
+    ports:
+      - "6379:6379"
 
 volumes:
   postgres_data: {}
