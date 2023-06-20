@@ -43,4 +43,26 @@ RSpec.describe Driver, type: :model do
       end
     end
   end
+
+  describe '.handle_assignment' do
+    let(:driver) { create(:driver) }
+    let(:truck) { create(:truck) }
+    let(:invalid_truck_id) { 999 }
+
+    context 'when a valid truck id is provided' do
+      it 'creates a new assignment' do
+        expect {
+          Driver.handle_assignment(driver, truck.id)
+        }.to change(Assignment, :count).by(1)
+      end
+    end
+
+    context 'when an invalid truck id is provided' do
+      it 'raises an error' do
+        expect {
+          Driver.handle_assignment(driver, invalid_truck_id)
+        }.to raise_error(RuntimeError, 'There is no truck with this id')
+      end
+    end
+  end
 end
