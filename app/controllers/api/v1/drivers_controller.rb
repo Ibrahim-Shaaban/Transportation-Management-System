@@ -1,11 +1,18 @@
 class Api::V1::DriversController < Api::BaseApi
   before_action :set_driver, only: %i[ show update destroy ]
+  before_action only: [:assign_truck ] do
+    authorized
+  end
 
   # GET /drivers
   def index
     @drivers = Driver.all
 
     render json: @drivers
+  end
+
+  def assign_truck
+    render json: current_driver
   end
 
   def sign_in
