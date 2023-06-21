@@ -30,7 +30,7 @@ services:
       - redis
   
   redis:
-    image: redis:6.0
+    image: redis:6.2.5
     ports:
       - "6379:6379"
 
