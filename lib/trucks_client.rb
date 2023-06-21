@@ -1,7 +1,7 @@
 require 'httparty'
 class TrucksClient
   def initialize
-    @api_key = 'illa-trucks-2023'
+    @api_key = ENV['TRUCKS_API_KEY']
     @url = "https://task-api-8etf.onrender.com/api/v1/trucks"
     @trucks = []
   end
