@@ -1,0 +1,3 @@
+import_trucks_from_api:
+  every: 1d
+  class: ImportTrucksWorker
